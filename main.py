@@ -6,6 +6,7 @@ from selenium.webdriver.common.keys import Keys
 import pyperclip
 from selenium.webdriver.common.action_chains import ActionChains
 
+elemento = ''
 service = Service(ChromeDriverManager().install())
 nav = webdriver.Chrome(service=service)
 nav.get("https://web.whatsapp.com")
@@ -14,7 +15,7 @@ mensagem = """só um teste de programa!
 valeu
 """
 
-list_contatos =["11955206595", "Kaua", "Jullya irmã", "Tio Leandro", "Mãe Aliny"]
+list_contatos =["11955206595", "Vô Antonio 2", "Vô Antonio 1", "Vó Suely Silveira", "Mãe Aliny",'Amor Da Minha Vida', 'Tiago']
 
 time.sleep(60)
 
@@ -34,10 +35,41 @@ for item in lista_elemento:
     texto = item.text.replace("\n", "")
     if mensagem in texto:
         elemento = item
-        break
-ActionChains(nav).move_to_element(elemento).perform()
-elemento.find_element('class name', '_3u9t-').click()
 
+quantidade_contato = len(list_contatos)
+if quantidade_contato % 5 == 0:
+    quantidade_bloco = quantidade_contato / 5
+else:
+    quantidade_bloco = int(quantidade_contato / 5) + 1
+
+# Seleciona a mensagem e abre a caixa para encaminhar
+for i in range(quantidade_contato):
+    i_inicial = i * 5
+    i_final = (i + 1) * 5
+    lista_enviar = list_contatos[i_inicial:i_final]
+
+    ActionChains(nav).move_to_element(elemento).perform()
+    elemento.find_element('class name', '_3u9t-').click()
+    time.sleep(0.5)
+    nav.find_element('xpath', '//*[@id="app"]/div/span[4]/div/ul/div/li[4]/div').click()
+    nav.find_element('xpath', '//*[@id="main"]/span[2]/div/button[4]').click()
+    time.sleep(1)
+    # escreve o nome dos contatos dentro da lista
+    for nome in lista_enviar:
+        nav.find_element('xpath',
+                         '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div/div[2]/div/div[1]/p').send_keys(
+            nome)
+        time.sleep(1)
+        nav.find_element('xpath',
+                         '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div/div[2]/div/div[1]/p').send_keys(
+            Keys.ENTER)
+        time.sleep(1)
+        nav.find_element('xpath',
+                         '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/div[1]/div/div/div[2]/div/div[1]/p').send_keys(
+            Keys.BACK_SPACE)
+        time.sleep(1)
+    nav.find_element('xpath', '//*[@id="app"]/div/span[2]/div/div/div/div/div/div/div/span/div/div/div').click()
+    time.sleep(8)
 
 #Gambiarra para o Selenium não fechar automaticamente
 while (True):
