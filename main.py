@@ -7,20 +7,33 @@ import pyperclip
 from selenium.webdriver.common.action_chains import ActionChains
 
 elemento = ''
+
+contato_envio = input("informe o próprio contato do Whatsapp: ")
+
+list_contatos = []
+
+while True:
+    contatos = input("digite um nome:")
+    list_contatos.append(contatos)
+
+    pergunta = input("Deseja adicionar mais um nome? (s/n): ")
+    if pergunta.lower() != 's':
+        break
+
+mensagem = input("Digite a mensagem que você deseja enviar: ")
+
+
 service = Service(ChromeDriverManager().install())
 nav = webdriver.Chrome(service=service)
 nav.get("https://web.whatsapp.com")
 
-mensagem = """só um teste de programa!
-valeu
-"""
 
-list_contatos =["11955206595", "Vô Antonio 2", "Vô Antonio 1", "Vó Suely Silveira", "Mãe Aliny",'Amor Da Minha Vida', 'Tiago']
+
 
 time.sleep(60)
 
 nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div/button/div[2]/span').click() #clicar na lupa
-nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]/p').send_keys("11955206595") #Selecionar meu numero
+nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]/p').send_keys(contato_envio) #Selecionar meu numero
 nav.find_element('xpath', '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]/p').send_keys(Keys.ENTER) #Selecionar tecla enter
 time.sleep(1)
 
